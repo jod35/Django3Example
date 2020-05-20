@@ -3,5 +3,15 @@ from .models import Post
 
 
 
-admin.site.register(Post)
+@admin.register(Post) #customizing the way to work with the models in the admin
+class PostAdmin(admin.ModelAdmin):
+    list_display=('title','slug','author','publish','status',)
+    list_filter=('status','created','publish','author')
+    search_fields=('title','body')
+    prepopulated_fields={'slug':('title',)}
+    raw_id_fields=('author',)
+    date_hierachy='publish'
+    ordering=('status','publish')
+
+
 # Register your models here.

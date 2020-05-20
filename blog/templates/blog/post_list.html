@@ -4,7 +4,7 @@
 {% block content%}
     <h1>My Blog</h1>
     {% for post in posts%}
-        <a href="{{post.id}}">
+        <a href="{{post.slug}}">
             {{post.title}}
         </a>
         <p class="date">
@@ -12,4 +12,5 @@
         </p>
         {{post.body|truncatewords:30|linebreaks}}
     {% endfor%}
+    {% include "blog/pagination.html" with page=posts %}
 {% endblock content%}

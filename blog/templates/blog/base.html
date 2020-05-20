@@ -1,0 +1,19 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Django3 Blog App</title>
+    <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+  </head>
+  <body>
+      <div id="content">
+        {% block content%}
+        {% endblock content%}
+      </div>
+      <div id="sidebar">
+        <h2>My Blog</h2>
+        <p>This is my blog.</p>
+      </div>
+  </body>
+</html>

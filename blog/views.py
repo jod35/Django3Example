@@ -40,7 +40,7 @@ class PostListView(ListView):
 def post_detail(request,post_id):
     post=Post.objects.get(id=post_id)
     
-    comment_form=CommentForm()
+    comment_form=CommentForm( )
 
     #active comments for this post
     comments=post.comments.filter(active=True)
@@ -63,13 +63,13 @@ def post_detail(request,post_id):
             #save to the database    
             new_comment.save()
 
-        else:
-            comment_form=CommentForm()
+        
 
 
     context={
         'post':post,
         'comment_form':comment_form,
+        'comments':comments
     }
 
     return render(request,'blog/post_detail.html',context)

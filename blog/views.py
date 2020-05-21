@@ -37,23 +37,23 @@ class PostListView(ListView):
 
 
 #this view displays a detail of a single post
-def post_detail(request,slug):
-    post=Post.objects.get(slug=slug)
+def post_detail(request,post_id):
+    post=Post.objects.get(id=post_id)
 
     return render(request,'blog/post_detail.html',{'post':post})
 
 
 def post_share(request,post_id):
-    post=Post.objects.get_object_or_404(Post,id=post_id,status='published')
+    post=get_object_or_404(Post,id=post_id)
     sent=False
 
-    if request.method == POST:
+    if request.method == "POST":
         form=EmailPostForm(request.POST)
         if form.is_valid():
             cd=form.cleaned_data
             post_url=request.build_absolute_url(post.get_absolute_url())
-            subjects=f"{cd['name']} recommends you read \ "{cd['title']}""
-            message=f"Read {post.title} at {post_url} \n \n \" f{cd['name']'s comments: {cd['comments'] }"
+            subjects=f"{cd['name']} recommends you read {cd['title']}"
+            message=f"Read {post.title} at {post_url} \n"
             send_mail(subject,message,'jodestrevin@gmail.com',[cd['to']])
 
             sent=True

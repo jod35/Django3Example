@@ -1,8 +1,8 @@
 from django.shortcuts import render,get_object_or_404
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
-from .models import Post
+from .models import Post,Comment
 from django.views.generic import ListView
-from .forms import EmailPostForm
+from .forms import EmailPostForm,CommentForm
 
 # Create your views here.
 class PostListView(ListView):
@@ -39,8 +39,40 @@ class PostListView(ListView):
 #this view displays a detail of a single post
 def post_detail(request,post_id):
     post=Post.objects.get(id=post_id)
+    
+    comment_form=CommentForm()
 
-    return render(request,'blog/post_detail.html',{'post':post})
+    #active comments for this post
+    comments=post.comments.filter(active=True)
+    
+
+    new_comment=None
+
+    if request.method =="POST":
+        comment_form=CommentForm(request.POST)
+
+        if comment_form.is_valid():
+            #CREATE A comment OBJECT but dont save it
+
+            new_comment=comment_form.save(commit=False)
+
+
+            #attach the comment to a post
+            new_comment.post=post
+
+            #save to the database    
+            new_comment.save()
+
+        else:
+            comment_form=CommentForm()
+
+
+    context={
+        'post':post,
+        'comment_form':comment_form,
+    }
+
+    return render(request,'blog/post_detail.html',context)
 
 
 def post_share(request,post_id):

@@ -7,6 +7,7 @@
         <a href="{{post.id}}">
             {{post.title}}
         </a>
+        <p class="tag">Tags: {{post.tags.all|join:", "}}</p>
         <p class="date">
           Published {{post.publish}} by {{post.author}}
         </p>

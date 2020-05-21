@@ -3,22 +3,27 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .models import Post,Comment
 from django.views.generic import ListView
 from .forms import EmailPostForm,CommentForm
+from taggit.models import Tag
 
 # Create your views here.
-class PostListView(ListView):
+'''class PostListView(ListView):
     queryset=Post.objects.all()
     context_object_name='posts'
     paginate_by=3
-    template_name='blog/post_list.html'
+    template_name='blog/post_list.html'''
 
 #this view displays a list of posts
-'''def post_list(request):
+def post_list(request,tag_slug=None):
     object_list=Post.objects.all() #all objects
 
     paginator=Paginator(object_list,3) #3 posts per page
 
+    tag=None
 
 
+    if tag_slug:
+        tag=get_object_or_404(Tag,slug=tag_slug)
+        object_list=object_list.filter(tags__in=[tag])
     page=request.GET.get('page')
 
     try:
@@ -32,7 +37,7 @@ class PostListView(ListView):
         # if page is out of range, deliver the last page of results
         posts=paginator.page(paginator.num_pages)
 
-    return render(request,'blog/post_list.html',{'page':page,'posts':posts})'''
+    return render(request,'blog/post_list.html',{'page':page,'posts':posts,'tag':tag})
 
 
 
